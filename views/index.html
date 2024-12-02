@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Poker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Planning Poker</h1>
+        <nav>
+            <a href="#about">À propos</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Bienvenue sur Planning Poker</h2>
+            <p>Choisissez une option :</p>
+
+            <div class="options">
+                <button id="create-game-btn">Créer une nouvelle partie</button>
+                <button id="load-game-btn">Charger une partie existante</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Planning Poker. Tous droits réservés.</p>
+        <a href="#legal">Mentions légales</a>
+    </footer>
+
+    <script>
+        // Gestion des boutons
+        document.getElementById("create-game-btn").addEventListener("click", function () {
+            window.location.href = "create-game.html";
+        });
+
+        document.getElementById("load-game-btn").addEventListener("click", function () {
+            window.location.href = "load-game.html";
+        });
+    </script>
+</body>
+
+</html>
