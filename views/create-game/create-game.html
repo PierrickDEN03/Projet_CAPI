@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer une partie</title>
-    <script src="create-game.js" defer></script>
+    <script type="module" src="create-game.js" defer></script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 
@@ -14,7 +14,13 @@
         <h1>Créer une nouvelle partie</h1>
     </header>
     <main>
-        <form id="create-game-form" action="../game/game.html">
+        <form id="create-game-form" action="../backlog/backlog.html">
+            <label for="mode_game">Mode de jeu (type de vote) :</label>
+            <select id="mode_game" name="mode_game" required>
+                <option value="moyenne">Moyenne</option>
+                <option value="mediane">Médiane</option>
+                <option value="unanimite">Unanimité</option>
+            </select>
             <label for="player-count">Nombre de joueurs (max : 20) :</label>
             <input type="number" id="player-count" name="player-count" min="1" max="20" required>
             <div id="player-names"></div>

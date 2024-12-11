@@ -1,3 +1,6 @@
+import { setItem } from '../data/local-storage_class.js'
+
+//Génère dynamiquement des input pour le nombre de joueurs sélectionnés
 document.getElementById('player-count').addEventListener('input', function () {
     //Affiche dynamiquement des input pour le nombre de joueurs sélectionnés
     const playerCount = this.value;
@@ -31,6 +34,32 @@ const input = document.getElementById('player-count');
 
 
 
+
 document.getElementById("button_submit").addEventListener("click", function () {
-    window.location.href = "../game/game.html";
+    let modeGame =document.getElementById('mode_game').value
+    //Récupère le nombre de joueurs renseigné par l'utilisateur
+    let nbJoueur = document.getElementById ('player-count').value
+    if (nbJoueur == ""){
+        alert("Veuillez renseigner le nombre de joueurs")
+        return  
+    }
+    //Pour chaque joueur, on vérifie si le champ nom n'est pas vide 
+    for (let i=0; i<nbJoueur; i++){
+        if (document.getElementsByName('player-name-'+(i+1))[0].value == ""){
+            alert("Veuillez renseigner un nom pour chaque joueur")
+            return
+        }
+    }
+    //Pour chaque joueur, on stocke l'id et le nom dans un objet dans le local storage
+    for (let i= 0; i<nbBacklog; i++){
+        let namePlayer = document.getElementsByName('player-name-'+(i+1))[0]
+        let UserObject = {
+            name: namePlayer.value
+        }
+        setItem('user'+(i+1), JSON.stringify(UserObject))
+    }
+    //On stocke le mode de jeu dans le local storage
+    localStorage.setItem('modeGame', document.getElementById('mode_game').value); 
+    //Redirige l'utilisateur vers la page backlog.html si tout s'est bien passé
+    window.location.href = "../backlog/backlog.html";
 });
