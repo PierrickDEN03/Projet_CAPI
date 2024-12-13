@@ -1,0 +1,31 @@
+{
+    "CAPI": {
+        "CAPI-ID": 14542165,
+        "CAPI-name": "CAPIName",
+        "game-mode": "game-mode",
+        "users": [
+            {
+                "id": 1,
+                "name": "John Doe"
+            },
+            {
+                "id": 2,
+                "name": "Jane Doe"
+            }
+        ],
+        "backlog": [
+            {
+                "id": 1,
+                "title": "Le titre de la tâche",
+                "description": "La description de la tâche",
+                "rate": 10
+            },
+            {
+                "id": 2,
+                "title": "Le titre de la tâche",
+                "description": "La description de la tâche",
+                "rate": 40
+            }
+        ]
+    }
+}

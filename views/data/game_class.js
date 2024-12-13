@@ -1,4 +1,5 @@
-import { deleteItem, getItem, setItem } from "./local-storage_class"
+import { getItem, setItem } from "./local-storage_class"
+import uuid from 'uuid'
 
 /**Classe à utiliser pour faire un game */
 export class Game {
@@ -16,69 +17,85 @@ export class Game {
      * @param {User[]} [users] Liste d'objet User
      * @param {Backlog[]} [backlogs] Liste d'objet Backlog
      */
-    constructor(id,name,mode,users,backlogs){
-        if(id === undefined || name === undefined || mode === undefined ){
-            throw new Error("L'id et le name sont obligatoires pour définir un Game")
-        }else{
-            this.#id = id
-            this.#name = name
-            this.#mode = mode
+    constructor(id, name, mode, users, backlogs) {
+        if (name === undefined || mode === undefined) {
+            throw new Error("Le name sont obligatoires pour définir un Game")
+        } if (id !== undefined) {
+            this.#name = getItem("name")
+            this.#mode = getItem("mode")
+            // Ces paramètres seront undefined lors de l'instanciation de la classe, puis rempli via les formulaires
+            this.#users = getItem("users")
+            this.#backlogs = getItem("backlogs")
+        } else {
+            this.#id = this.initId()
+            this.name = name
+            this.mode = mode
             // Ces paramètres seront undefined lors de l'instanciation de la classe, puis rempli via les formulaires
             this.#users = users
             this.#backlogs = backlogs
         }
     }
 
-     /**
-     * Retourne l'id de la game
-     * @returns {number}
+    /**
+     * Crée l'id de la classe
+     * @return {number}
      */
-    get id(){
+    initId() {
+        return 28302903
+    }
+
+    /**
+    * Retourne l'id de la game
+    * @returns {number}
+    */
+    get id() {
         return this.#id
     }
     /**
      * Instancie l'id de la game
      * @param {number} id Id de la game
      */
-    set id(id){
+    set id(id) {
         this.#id = id
     }
     /**
      * Renvoie le nom de la game
      * @returns {string}
      */
-    get name(){
+    get name() {
         return this.#name
     }
     /**
      * Instancie le nom de la game
      * @param {string} name Nom de la game
      */
-    set name(name){
-        this.#name = name 
+    set name(name) {
+        this.#name = name
+        setItem(`gameName${this.#id}`, this.#name)
     }
     /**
      * Renvoie le mode de jeu de la game
      * @returns {string}
      */
-    get mode(){
+    get mode() {
         return this.#mode
     }
     /**
      * Instancie le mode de jeu de la game
      * @param {string} mode Mode de jeu de la game
      */
-    set mode(mode){
-        this.#mode = mode 
+    set mode(mode) {
+        this.#mode = mode
+        setItem(`gameMode${this.#id}`, this.#mode)
     }
 
     /**
      * Retourne le nom de tous les users
      * @returns {string[]} L'ensemble des noms des user
      */
-    get users(){
+    get users() {
         let names = []
-        for(let user of this.#users){
+        for (let user of this.#users) {
             names.push(user.name)
         }
         return names
@@ -86,24 +103,27 @@ export class Game {
     /**
      * Instancie les users de la game
      * @param {string[]} names Liste des noms des users
-     */  
-    set users(names){
-        for(let i = 0; i < names.length ; i++){
+     */
+    set users(names) {
+        let ids = []
+        for (let i = 0; i < names.length; i++) {
             this.#users.push(new User(i, names[i]))
+            ids.push(i)
         }
+        setItem(`gameUsers${this.#id}`, ids)
     }
     /**
      * Retourne la liste des backlogs
      * @returns {string[]} L'ensemble des backlogs
      */
-    get backlogs(){
+    get backlogs() {
         return this.#backlogs
     }
     /**
      * Instancie les backlogs de la game
      * @param {string[]} backlogs Liste des noms des backlogs
      */
-    set backlogs(backlogs){
+    set backlogs(backlogs) {
         this.#backlogs = backlogs
     }
 }
@@ -118,38 +138,46 @@ export class User {
      * @param {number} id Id du joueur
      * @param {string} name Nom du joueur
      */
-    constructor(id,name){
-        this.#id=id
-        this.#name=name
+    constructor(name) {
+        if (name === undefined) {
+            throw new Error("Le name est obligatoire pour définir un User")
+        } else if (id !== undefined) {
+            this.name = getItem(`userName${id}`)
+        } else {
+            this.id = uuid.v4()
+            this.name = name
+        }
     }
 
     /**
      * Retourne l'id du joueur
      * @returns {number}
      */
-    get id(){
+    get id() {
         return this.#id
     }
     /**
      * Instancie l'id du joueur
      * @param {number} id Id du joueur
      */
-    set id(id){
-        this.#id = id 
+    set id(id) {
+        this.#id = id
+        setItem(`${this.#id}`, this.#id)
     }
     /**
      * Retourne le nom du joueur
      * @returns {string}
      */
-    get name(){
+    get name() {
         return this.#name
     }
     /**
      * Instancie le nom du joueur
      * @param {string} name Nom du joueur
      */
-    set name(name){
-        this.#name = name 
+    set name(name) {
+        this.#name = name
+        setItem(`userName${this.#id}`, this.#name)
     }
 }
 
@@ -167,64 +195,76 @@ export class Backlog {
      * @param {*} [description] Description (facultatif)
      * @param {*} [rate] Note attribuée à la fonctionnalité
      */
-    constructor(id,title,description,rate){
-        this.#id=id
-        this.#title=title
-        this.#description=description
-        //Rate sera undefined lors de l'instanciation de la classe, puis rempli via le jeu
-        this.#rate = rate
+    constructor(id, title, description, rate) {
+        if (title === undefined) {
+            throw new Error("Le title est obligatoire pour définir un Backlog")
+        } else if (id !== undefined) {
+            this.title = getItem(`backlogTitle${id}`)
+            this.description = getItem(`backlogDescription${id}`)
+            this.rate = getItem(`backlogRate${id}`)
+        } else {
+            this.id = uuid.v4()
+            this.title = title
+            this.description = description
+            //Rate sera undefined lors de l'instanciation de la classe, puis rempli via le jeu
+            this.rate = rate
+        }
     }
 
     /**
      * Retourne l'id de la fonctionnalité
      */
-    get id(){
+    get id() {
         return this.#id
     }
     /**
      * Instancie l'id de la fonctionnalité
      * @param {number} id Id de la fonctionnalité
      */
-    set id(id){
-        this.#id = id 
+    set id(id) {
+        this.#id = id
+        setItem(`${this.#id}`, this.#id)
     }
     /** 
      * Retourne le titre de la fonctionnalité
     */
-    get title(){
+    get title() {
         return this.#title
     }
     /**
      * Instancie le titre de la fonctionnalité
      * @param {string} title Titre de la fonctionnalité
      */
-    set title(title){
-        this.#title = title 
+    set title(title) {
+        this.#title = title
+        setItem(`backlogTitle${this.#id}`, this.#title)
     }
     /**
      * Retourne la description de la fonctionnalité
      */
-    get description(){
+    get description() {
         return this.#description
     }
     /**
      * Instancie la description de la fonctionnalité
      * @param {string} description Description de la fonctionnalité
      */
-    set description(description){
-        this.#description = description 
+    set description(description) {
+        this.#description = description
+        setItem(`backlogDescription${this.#id}`, this.#description)
     }
     /**
      * Retourne la note de la fonctionnalité
      */
-    get rate(){
+    get rate() {
         return this.#rate
     }
     /**
      * Instancie la note de la fonctionnalité
      * @param {number} rate Note de la fonctionnalité
      */
-    set rate(rate){
-        this.#rate = rate 
+    set rate(rate) {
+        this.#rate = rate
+        setItem(`backlogRate${this.#id}`, this.#rate)
     }
 }
