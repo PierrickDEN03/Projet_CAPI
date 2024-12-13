@@ -15,6 +15,8 @@
     </header>
     <main>
         <form id="create-game-form" action="../game/game.html">
+            <label for="game-name">Nom de la partie :</label>
+            <input type="text" id="game-name" name="game-name" required>
             <label for="backlog">Nombre de fonctionnalités (max : 20) :</label>
             <input type="number" id="backlog-count" name="backlog" min="1" max="20" required>
             <div id="backlog-names"></div>

@@ -77,9 +77,9 @@ export class Game {
      * @returns {string[]} L'ensemble des noms des user
      */
     get users(){
-        names = []
-        for(let user of users){
-            names.append(user.name)
+        let names = []
+        for(let user of this.#users){
+            names.push(user.name)
         }
         return names
     }
@@ -89,7 +89,7 @@ export class Game {
      */  
     set users(names){
         for(let i = 0; i < names.length ; i++){
-            this.#users.append(new User(i, names[i]))
+            this.#users.push(new User(i, names[i]))
         }
     }
     /**

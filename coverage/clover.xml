@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1734079756296" clover="3.2.0">
+  <project timestamp="1734079756296" name="All files">
+    <metrics statements="42" coveredstatements="19" conditionals="5" coveredconditionals="4" methods="28" coveredmethods="7" elements="75" coveredelements="30" complexity="0" loc="42" ncloc="42" packages="1" files="2" classes="2"/>
+    <file name="game_class.js" path="C:\Users\pierr\Desktop\Master Info\S1\CAPI\Projet_CAPI\views\data\game_class.js">
+      <metrics statements="39" coveredstatements="19" conditionals="5" coveredconditionals="4" methods="25" coveredmethods="7"/>
+      <line num="20" count="1" type="cond" truecount="4" falsecount="1"/>
+      <line num="21" count="0" type="stmt"/>
+      <line num="23" count="1" type="stmt"/>
+      <line num="24" count="1" type="stmt"/>
+      <line num="25" count="1" type="stmt"/>
+      <line num="27" count="1" type="stmt"/>
+      <line num="28" count="1" type="stmt"/>
+      <line num="37" count="0" type="stmt"/>
+      <line num="44" count="0" type="stmt"/>
+      <line num="51" count="1" type="stmt"/>
+      <line num="58" count="0" type="stmt"/>
+      <line num="65" count="0" type="stmt"/>
+      <line num="72" count="0" type="stmt"/>
+      <line num="80" count="1" type="stmt"/>
+      <line num="81" count="1" type="stmt"/>
+      <line num="82" count="2" type="stmt"/>
+      <line num="84" count="1" type="stmt"/>
+      <line num="91" count="0" type="stmt"/>
+      <line num="92" count="0" type="stmt"/>
+      <line num="100" count="1" type="stmt"/>
+      <line num="107" count="0" type="stmt"/>
+      <line num="122" count="2" type="stmt"/>
+      <line num="123" count="2" type="stmt"/>
+      <line num="131" count="0" type="stmt"/>
+      <line num="138" count="0" type="stmt"/>
+      <line num="145" count="4" type="stmt"/>
+      <line num="152" count="0" type="stmt"/>
+      <line num="171" count="2" type="stmt"/>
+      <line num="172" count="2" type="stmt"/>
+      <line num="173" count="2" type="stmt"/>
+      <line num="175" count="2" type="stmt"/>
+      <line num="182" count="0" type="stmt"/>
+      <line num="189" count="0" type="stmt"/>
+      <line num="195" count="0" type="stmt"/>
+      <line num="202" count="0" type="stmt"/>
+      <line num="208" count="0" type="stmt"/>
+      <line num="215" count="0" type="stmt"/>
+      <line num="221" count="0" type="stmt"/>
+      <line num="228" count="0" type="stmt"/>
+    </file>
+    <file name="local-storage_class.js" path="C:\Users\pierr\Desktop\Master Info\S1\CAPI\Projet_CAPI\views\data\local-storage_class.js">
+      <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
+      <line num="7" count="0" type="stmt"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="24" count="0" type="stmt"/>
+    </file>
+  </project>
+</coverage>
