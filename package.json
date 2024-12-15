@@ -3,7 +3,7 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "generate-docs": "npx jsdoc -c ./jsdoc.json -d docs"
+    "generate-docs": "npx jsdoc -c ./jsdoc.json"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.0",
