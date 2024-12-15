@@ -32,7 +32,7 @@ export class Game {
     }
 
     /**
-     * Pour initialiser une game à partir de son id
+     * Pour initialiser une game à partir de son id, en récupérant les données liées à cet id dans le local storage
      * @param {string} id Un identifiant unique pour la game
      * @returns {Game}
      */
