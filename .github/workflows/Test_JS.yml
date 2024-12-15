@@ -29,10 +29,6 @@ jobs:
 
       - name: Run tests
         run: npm test
-      
-      - name: Build
-        uses: andstor/jsdoc-action@v1
-        with:
-          source_dir: ./
-          recurse: true
-          output_dir: ./docs
+
+      - name: Generate documentation
+        run: npm run generate-doc

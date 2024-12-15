@@ -2,7 +2,8 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "generate-docs": "npx jsdoc views -r -c ./jsdoc.json -d docs"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.26.0",
@@ -12,6 +13,7 @@
   },
   "dependencies": {
     "i": "^0.3.7",
+    "jsdoc": "^4.0.4",
     "uuid": "^11.0.3"
   },
   "jest": {
