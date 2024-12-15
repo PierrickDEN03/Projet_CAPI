@@ -31,4 +31,4 @@ jobs:
         run: npm test
 
       - name: Generate documentation
-        run: npm run generate-doc
+        run: npm run generate-docs
