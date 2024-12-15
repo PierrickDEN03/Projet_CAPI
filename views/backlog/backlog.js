@@ -1,4 +1,4 @@
-import { setItem } from "../data/local-storage_class.js"
+import { setItem } from "../../data/local-storage_class.js"
 
 //génère dynamiquement des input pour le nombre de joueurs sélectionnés
 document.getElementById('backlog-count').addEventListener('input', function () {
@@ -39,42 +39,42 @@ document.getElementById('backlog-count').addEventListener('input', function () {
 
 
 const input = document.getElementById('backlog-count');
-    // Bloque les saisies au clavier
-    input.addEventListener('keydown', (e) => {
-        // Autoriser seulement les touches non liées à la saisie (comme Tab, Backspace, etc.)
-        const allowedKeys = ['ArrowUp', 'ArrowDown', 'Tab', 'Backspace', 'Delete'];
-        if (!allowedKeys.includes(e.key)) {
-            e.preventDefault();
-        }
-    });
+// Bloque les saisies au clavier
+input.addEventListener('keydown', (e) => {
+    // Autoriser seulement les touches non liées à la saisie (comme Tab, Backspace, etc.)
+    const allowedKeys = ['ArrowUp', 'ArrowDown', 'Tab', 'Backspace', 'Delete'];
+    if (!allowedKeys.includes(e.key)) {
+        e.preventDefault();
+    }
+});
 
 
 
 
 document.getElementById("button_submit").addEventListener("click", function () {
     //Récupère le nombre de backlog renseigné par l'utilisateur
-    let nbBacklog = document.getElementById ('backlog-count').value
+    let nbBacklog = document.getElementById('backlog-count').value
     console.log(nbBacklog)
-    if (nbBacklog == ""){
+    if (nbBacklog == "") {
         alert("Veuillez renseigner le nombre de fonctionnalités")
         return
     }
     //Pour chaque backlog, on vérifie si le champ titre n'est pas vide 
-    for (let i=0; i<nbBacklog; i++){
-        if (document.getElementsByName('backlog-name-'+(i+1))[0].value == ""){
+    for (let i = 0; i < nbBacklog; i++) {
+        if (document.getElementsByName('backlog-name-' + (i + 1))[0].value == "") {
             alert("Veuillez renseigner un titre pour chaque fonctionnalité")
             return
         }
     }
     //Pour chaque backlog, on stocke le titre et la description dans un objet dans le local storage
-    for (let i= 0; i<nbBacklog; i++){
-        let backlog = document.getElementsByName('backlog-name-'+(i+1))[0]
-        let backlogDescription = document.getElementsByName('backlog-description-'+(i+1))[0]
+    for (let i = 0; i < nbBacklog; i++) {
+        let backlog = document.getElementsByName('backlog-name-' + (i + 1))[0]
+        let backlogDescription = document.getElementsByName('backlog-description-' + (i + 1))[0]
         let backlogObject = {
             title: backlog.value,
             description: backlogDescription.value
         }
-        setItem('backlog'+(i+1), JSON.stringify(backlogObject))
+        setItem('backlog' + (i + 1), JSON.stringify(backlogObject))
     }
     //Redirige l'utilisateur vers la page backlog.html si tout s'est bien passé
     window.location.href = "../backlog/backlog.html";
