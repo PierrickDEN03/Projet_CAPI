@@ -1,5 +1,4 @@
-import { getItem, setItem } from "./local-storage_class"
-import uuid from 'uuid'
+import { getItem, setItem } from "./local-storage_class.js"
 
 /**Classe à utiliser pour faire un game */
 export class Game {
@@ -11,7 +10,7 @@ export class Game {
 
     /**
      * Instancie un nouvel objet à partir de ses paramètres name, mode, users et back
-     * @param {string} id Id de la game
+     * @param {string} id Id de la game, généré automatiquement si non défini
      * @param {string} name Nom de la game en cours
      * @param {'moyenne'|'mediane'|'unanimite'} mode Défini le mode du vote, soit moyenne, mediane ou unanimite
      * @param {User[]} [users] Liste d'objet User
@@ -20,7 +19,7 @@ export class Game {
      */
     constructor(name, mode, users, backlogs, id) {
         if (name !== undefined && mode !== undefined) {
-            this.#id = id === undefined ? uuid.v4() : id
+            this.#id = id === undefined ? self.crypto.randomUUID() : id
             this.name = name
             this.mode = mode
             // Ces paramètres seront undefined lors de l'instanciation de la classe, puis rempli via les formulaires
@@ -38,16 +37,22 @@ export class Game {
      */
     static initFromId(id) {
         let backlogsId = getItem(`gameBacklogs${id}`)
-        let backlogs = []
-        for (let backlogId of backlogsId) {
-            backlogs.push(Backlog.initFromId(backlogId))
+        let backlogs = undefined
+        if (backlogsId != null) {
+            backlogs = []
+            for (let backlogId of backlogsId) {
+                backlogs.push(Backlog.initFromId(backlogId))
+            }
         }
         let usersId = getItem(`gameUsers${id}`)
-        let users = []
-        for (let userId of usersId) {
-            users.push(User.initFromId(userId))
+        let users = undefined
+        if (usersId != null) {
+            users = []
+            for (let userId of usersId) {
+                users.push(User.initFromId(userId))
+            }
         }
-        return new Game(id, getItem(`gameName${id}`), getItem(`gameMode${id}`), users, backlogs)
+        return new Game(getItem(`gameName${id}`), getItem(`gameMode${id}`), users, backlogs, id)
     }
 
     /**
@@ -104,12 +109,14 @@ export class Game {
      * @param {string[]} names Liste des noms des users
      */
     set users(users) {
-        this.#users = users
-        let ids = []
-        for (let user of this.#users) {
-            ids.push(user.id)
+        if (users != null) {
+            this.#users = users
+            let ids = []
+            for (let user of this.#users) {
+                ids.push(user.id)
+            }
+            setItem(`gameUsers${this.#id}`, ids)
         }
-        setItem(`gameUsers${this.#id}`, ids)
     }
     /**
      * Retourne la liste des backlogs
@@ -124,7 +131,7 @@ export class Game {
      */
     set backlogs(backlogs) {
 
-        this.#backlogs = backlogs
+        if (backlogs != null) { this.#backlogs = backlogs }
     }
 }
 
@@ -141,7 +148,7 @@ export class User {
      */
     constructor(name, id) {
         if (name !== undefined) {
-            this.id = id === undefined ? uuid.v4() : id
+            this.id = id === undefined ? self.crypto.randomUUID() : id
             this.name = name
         } else {
             throw new Error("Le name ou l'id est obligatoire pour définir un User")
@@ -154,7 +161,7 @@ export class User {
      * @returns {User}
      */
     static initFromId(id) {
-        return new User(id, getItem(`userName${id}`))
+        return new User(getItem(`userName${id}`), id)
     }
     /**
      * Retourne l'id du joueur
@@ -193,19 +200,19 @@ export class Backlog {
     #id = undefined
     #title = undefined
     #description = ""
-    #rate = -1
+    #rate = []
 
     /**
      * Si l'id est défini avec undefined, alors on instancie un objet Backlog à partir des paramètres title, description et rate, sinon on instancie en récupérant les données enregistrer à partir de l'id
      * @param {string} id Id de la fonctionnalité
      * @param {string} title Titre de la fonctionnalité
      * @param {string} [description] Description (facultatif)
-     * @param {number} [rate] Note attribuée à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté (facultatif)
+     * @param {Array<string, number>} [rates] Note attribuée à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté, chaque note est liée à l'id d'un User (facultatif)
      * @param {string} [id] Donner l'id seulement si l'on définit une fonctionnalité déjà existante
      */
     constructor(title, description, rate, id) {
         if (title !== undefined) {
-            this.id = id === undefined ? uuid.v4() : id
+            this.id = id === undefined ? self.crypto.randomUUID() : id
             this.title = title
             this.description = description
             //Rate sera undefined lors de l'instanciation de la classe, puis rempli via le jeu
@@ -221,7 +228,7 @@ export class Backlog {
      * @returns {Backlog}
      */
     static initFromId(id) {
-        return new Backlog(id, getItem(`backlogTitle${id}`, getItem(`backlogDescription${id}`, getItem(`backlogRate${id}`))))
+        return new Backlog(getItem(`backlogTitle${id}`, getItem(`backlogDescription${id}`, getItem(`backlogRate${id}`))), id)
     }
 
     /**
