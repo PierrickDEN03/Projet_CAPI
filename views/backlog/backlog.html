@@ -14,11 +14,9 @@
         <h1>Créer une nouvelle partie</h1>
     </header>
     <main>
-        <form id="create-game-form" action="../game/game.html">
-            <label for="game-name">Nom de la partie :</label>
-            <input type="text" id="game-name" name="game-name" required>
-            <label for="backlog">Nombre de fonctionnalités (max : 20) :</label>
-            <input type="number" id="backlog-count" name="backlog" min="1" max="20" required>
+        <form id="add-backlog-form" action="../game/game.html">
+            <label for="backlog-count">Nombre de fonctionnalités (max : 20) :</label>
+            <input type="number" id="backlog-count" name="backlog-count" min="1" max="20" value="1" required>
             <div id="backlog-names"></div>
             <button id="button_submit" type="submit">Valider</button>
         </form>

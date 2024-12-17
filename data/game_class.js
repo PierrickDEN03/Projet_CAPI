@@ -98,15 +98,11 @@ export class Game {
      * @returns {string[]} L'ensemble des noms des user
      */
     get users() {
-        let names = []
-        for (let user of this.#users) {
-            names.push(user.name)
-        }
-        return names
+        return this.#users
     }
     /**
-     * Instancie les users de la game
-     * @param {string[]} names Liste des noms des users
+     * Instancie les users de la game et garde en mémoire les ids de ces users
+     * @param {User[]} users Liste des users
      */
     set users(users) {
         if (users != null) {
@@ -118,6 +114,7 @@ export class Game {
             setItem(`gameUsers${this.#id}`, ids)
         }
     }
+
     /**
      * Retourne la liste des backlogs
      * @returns {Backlog[]} L'ensemble des backlogs
@@ -127,11 +124,29 @@ export class Game {
     }
     /**
      * Instancie les backlogs de la game
-     * @param {Backlog[]} backlogs Liste des noms des backlogs
+     * @param {Backlog[]} backlogs Liste des backlogs
      */
     set backlogs(backlogs) {
+        if (backlogs != null) {
+            this.#backlogs = backlogs
+            let ids = []
+            for (let backlog of this.#backlogs) {
+                ids.push(backlog.id)
+            }
+            setItem(`gameBacklogs${this.#id}`, ids)
+        }
+    }
 
-        if (backlogs != null) { this.#backlogs = backlogs }
+    /**
+     * Retourne les noms des users
+     * @returns {string[]} L'ensemble des noms des users
+    */
+    get userNames() {
+        let names = []
+        for (let user of this.#users) {
+            names.push(user.name)
+        }
+        return names
     }
 }
 
@@ -199,8 +214,9 @@ export class User {
 export class Backlog {
     #id = undefined
     #title = undefined
-    #description = ""
+    #description = undefined
     #rate = []
+    #finalRate = -2
 
     /**
      * Si l'id est défini avec undefined, alors on instancie un objet Backlog à partir des paramètres title, description et rate, sinon on instancie en récupérant les données enregistrer à partir de l'id
@@ -208,6 +224,7 @@ export class Backlog {
      * @param {string} title Titre de la fonctionnalité
      * @param {string} [description] Description (facultatif)
      * @param {Array<string, number>} [rates] Note attribuée à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté, chaque note est liée à l'id d'un User (facultatif)
+     * @param {number} [finalRate] Note finale de la fonctionnalité, de 0 à 100, -1 pour en cours de notation, -2 pour non noté
      * @param {string} [id] Donner l'id seulement si l'on définit une fonctionnalité déjà existante
      */
     constructor(title, description, rate, id) {
@@ -228,7 +245,11 @@ export class Backlog {
      * @returns {Backlog}
      */
     static initFromId(id) {
-        return new Backlog(getItem(`backlogTitle${id}`, getItem(`backlogDescription${id}`, getItem(`backlogRate${id}`))), id)
+        let rate = undefined
+        if (getItem(`backlogRate${id}`) != null) {
+            rate = getItem(`backlogRate${id}`)
+        }
+        return new Backlog(getItem(`backlogTitle${id}`), getItem(`backlogDescription${id}`), rate, id)
     }
 
     /**
@@ -287,7 +308,20 @@ export class Backlog {
         if (rate < -1 || rate > 100) {
             throw new Error("La note doit être comprise entre 0 et 100")
         }
-        this.#rate = rate
-        setItem(`backlogRate${this.#id}`, this.#rate)
+        if (rate != null) {
+            this.#rate = rate
+            setItem(`backlogRate${this.#id}`, this.#rate)
+        }
+    }
+
+    get finalRate() {
+        return this.#finalRate
+    }
+
+    set finalRate(finalRate) {
+        if (finalRate < 0 || finalRate > 100) {
+            throw new Error("La note finale doit être comprise entre 0 et 100")
+        }
+        this.#finalRate = finalRate
     }
 }

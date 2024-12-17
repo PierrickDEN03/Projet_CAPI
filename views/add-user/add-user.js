@@ -1,4 +1,3 @@
-import { setItem } from '../../data/local-storage_class.js'
 import { Game, User } from '../../data/game_class.js'
 
 // Récupère l'id de la game dans l'url
@@ -6,13 +5,39 @@ const gameId = new URLSearchParams(window.location.search).get('id');
 
 const game = Game.initFromId(gameId)
 
-console.log(game.name)
-
+// Ajoute le input pour 1 joueur par défaut
 addNamePlayer()
-//Génère dynamiquement des input pour le nombre de joueurs sélectionnés
+
 const input = document.getElementById('player-count')
 
+//Génère dynamiquement des input pour le nombre de joueurs sélectionnés
 input.addEventListener('input', addNamePlayer);
+
+// Bloque les saisies au clavier
+input.addEventListener('keydown', (e) => {
+    // Autoriser seulement les touches non liées à la saisie (comme Tab, Backspace, etc.)
+    const allowedKeys = ['ArrowUp', 'ArrowDown', 'Tab', 'Backspace', 'Delete'];
+    if (!allowedKeys.includes(e.key)) {
+        e.preventDefault();
+    }
+});
+
+document.getElementById("add-user-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    //Récupère le nombre de joueurs renseigné par l'utilisateur
+    let nbJoueur = document.getElementById('player-count').value
+    let users = []
+    for (let i = 0; i < nbJoueur; i++) {
+        let namePlayer = document.getElementsByName('player-name-' + (i + 1))[0].value
+        //création et ajout du User dans le local storage
+        const user = new User(namePlayer)
+        users.push(user)
+    }
+    game.users = users
+
+    window.location.href = "../backlog/backlog.html?id=" + gameId;
+});
+
 
 function addNamePlayer() {
     //Affiche dynamiquement des input pour le nombre de joueurs sélectionnés
@@ -32,37 +57,3 @@ function addNamePlayer() {
     }
 
 }
-
-
-// Bloque les saisies au clavier
-input.addEventListener('keydown', (e) => {
-    // Autoriser seulement les touches non liées à la saisie (comme Tab, Backspace, etc.)
-    const allowedKeys = ['ArrowUp', 'ArrowDown', 'Tab', 'Backspace', 'Delete'];
-    if (!allowedKeys.includes(e.key)) {
-        e.preventDefault();
-    }
-});
-
-
-
-
-
-document.getElementById("button_submit").addEventListener("click", function () {
-    let modeGame = document.getElementById('mode_game').value
-    //Récupère le nombre de joueurs renseigné par l'utilisateur
-    let nbJoueur = document.getElementById('player-count').value
-    //Pour chaque joueur, on stocke l'id et le nom dans un objet dans le local storage
-    for (let i = 0; i < nbJoueur; i++) {
-        let namePlayer = document.getElementsByName('player-name-' + (i + 1))[0]
-        let UserObject = {
-            name: namePlayer.value
-        }
-        setItem('user' + (i + 1), JSON.stringify(UserObject))
-        const user = new User(namePlayer)
-    }
-    //On stocke le mode de jeu dans le local storage
-    localStorage.setItem('modeGame', document.getElementById('mode_game').value);
-    //Redirige l'utilisateur vers la page backlog.html si tout s'est bien passé
-    window.location.href = "../backlog/backlog.html";
-});
-

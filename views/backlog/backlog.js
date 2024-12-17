@@ -1,9 +1,53 @@
-import { setItem } from "../../data/local-storage_class.js"
+import { Backlog, Game } from "../../data/game_class.js"
+
+// Récupère l'id de la game dans l'url
+const gameId = new URLSearchParams(window.location.search).get('id');
+const game = Game.initFromId(gameId)
+
+console.log(game.backlogs)
+
+//Pour afficher le premier backlog
+addBacklog()
+
+const input = document.getElementById('backlog-count');
 
 //génère dynamiquement des input pour le nombre de joueurs sélectionnés
-document.getElementById('backlog-count').addEventListener('input', function () {
+input.addEventListener('input', addBacklog);
+
+// Bloque les saisies au clavier
+input.addEventListener('keydown', (e) => {
+    // Autoriser seulement les touches non liées à la saisie (comme Tab, Backspace, etc.)
+    const allowedKeys = ['ArrowUp', 'ArrowDown', 'Tab', 'Backspace', 'Delete'];
+    if (!allowedKeys.includes(e.key)) {
+        e.preventDefault();
+    }
+});
+
+
+
+
+document.getElementById("add-backlog-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    //Récupère le nombre de backlog renseigné par l'utilisateur
+    let nbBacklog = document.getElementById('backlog-count').value
+    const backlogs = []
+    //Pour chaque backlog, on stocke le titre et la description dans un objet dans le local storage
+    for (let i = 0; i < nbBacklog; i++) {
+        let backlogTitle = document.getElementsByName('backlog-name-' + (i + 1))[0]
+        let backlogDescription = document.getElementsByName('backlog-description-' + (i + 1))[0]
+
+        backlogs.push(new Backlog(backlogTitle.value, backlogDescription.value))
+    }
+    game.backlogs = backlogs
+
+    //Redirige l'utilisateur vers la page game.html si tout s'est bien passé
+    window.location.href = "../game-resume/game-resume.html?id=" + game.id;
+});
+
+
+function addBacklog() {
     //Affiche dynamiquement des input pour le nombre de joueurs sélectionnés
-    const backlogCount = this.value;
+    const backlogCount = document.getElementById("backlog-count").value;
     const backlogNamesDiv = document.getElementById('backlog-names');
     backlogNamesDiv.innerHTML = '';
     //Génère les input pour chaque backlog  
@@ -34,50 +78,4 @@ document.getElementById('backlog-count').addEventListener('input', function () {
         backlogNamesDiv.appendChild(container);
     }
 
-});
-
-
-
-const input = document.getElementById('backlog-count');
-// Bloque les saisies au clavier
-input.addEventListener('keydown', (e) => {
-    // Autoriser seulement les touches non liées à la saisie (comme Tab, Backspace, etc.)
-    const allowedKeys = ['ArrowUp', 'ArrowDown', 'Tab', 'Backspace', 'Delete'];
-    if (!allowedKeys.includes(e.key)) {
-        e.preventDefault();
-    }
-});
-
-
-
-
-document.getElementById("button_submit").addEventListener("click", function () {
-    //Récupère le nombre de backlog renseigné par l'utilisateur
-    let nbBacklog = document.getElementById('backlog-count').value
-    console.log(nbBacklog)
-    if (nbBacklog == "") {
-        alert("Veuillez renseigner le nombre de fonctionnalités")
-        return
-    }
-    //Pour chaque backlog, on vérifie si le champ titre n'est pas vide 
-    for (let i = 0; i < nbBacklog; i++) {
-        if (document.getElementsByName('backlog-name-' + (i + 1))[0].value == "") {
-            alert("Veuillez renseigner un titre pour chaque fonctionnalité")
-            return
-        }
-    }
-    //Pour chaque backlog, on stocke le titre et la description dans un objet dans le local storage
-    for (let i = 0; i < nbBacklog; i++) {
-        let backlog = document.getElementsByName('backlog-name-' + (i + 1))[0]
-        let backlogDescription = document.getElementsByName('backlog-description-' + (i + 1))[0]
-        let backlogObject = {
-            title: backlog.value,
-            description: backlogDescription.value
-        }
-        setItem('backlog' + (i + 1), JSON.stringify(backlogObject))
-    }
-    //Redirige l'utilisateur vers la page backlog.html si tout s'est bien passé
-    window.location.href = "../backlog/backlog.html";
-});
-
-
+}

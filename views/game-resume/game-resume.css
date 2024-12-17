@@ -1,0 +1,28 @@
+.backlog-resume-list {
+    padding: 0.5rem;
+
+}
+
+.backlog-resume-list:hover {
+    background-color: rgb(255, 201, 150);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    cursor: pointer;
+}
+
+.backlog-selected {
+    background-color: rgb(255, 150, 52);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.backlog-selected:hover {
+    background-color: rgb(255, 150, 52);
+}
+
+aside#backlogs-container {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    border-right: solid 1px black;
+}
