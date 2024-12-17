@@ -25,7 +25,13 @@ class LocalStorageMock {
 }
 
 global.localStorage = new LocalStorageMock;
-jest.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
+
+// Mock pour self.crypto
+global.self = {
+    crypto: {
+        randomUUID: jest.fn().mockReturnValue('mocked-uuid')
+    }
+};
 
 
 describe("Tests unitaires classes", function () {
@@ -53,7 +59,7 @@ describe("Tests unitaires classes", function () {
         expect(game.name).toBe("game1")
     })
     it("should return name of users", function () {
-        expect(game.users).toEqual([user1.name, user2.name])
+        expect(game.userNames).toEqual([user1.name, user2.name])
     })
     it("should return name of backlogs", function () {
         expect(game.backlogs).toEqual([backlog1, backlog2])

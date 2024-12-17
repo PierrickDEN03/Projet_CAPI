@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Backlog<span class="signature">(id, title, description<span class="signature-attributes">opt</span>, rates<span class="signature-attributes">opt</span>, id<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Backlog<span class="signature">(id, title, description<span class="signature-attributes">opt</span>, rates<span class="signature-attributes">opt</span>, finalRate<span class="signature-attributes">opt</span>, id<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
         
             <div class="class-description"><p>Classe à utiliser pour créer une fonctionnalité</p></div>
         
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="Backlog"><span class="type-signature"></span>new Backlog<span class="signature">(id, title, description<span class="signature-attributes">opt</span>, rates<span class="signature-attributes">opt</span>, id<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Backlog"><span class="type-signature"></span>new Backlog<span class="signature">(id, title, description<span class="signature-attributes">opt</span>, rates<span class="signature-attributes">opt</span>, finalRate<span class="signature-attributes">opt</span>, id<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
     
 
     
@@ -219,6 +219,39 @@
 
         <tr>
             
+                <td class="name"><code>finalRate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Note finale de la fonctionnalité, de 0 à 100, -1 pour en cours de notation, -2 pour non noté</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>id</code></td>
             
 
@@ -286,7 +319,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game_class.js.html">game_class.js</a>, <a href="game_class.js.html#line192">line 192</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line214">line 214</a>
     </li></ul></dd>
     
 
@@ -387,7 +420,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game_class.js.html">game_class.js</a>, <a href="game_class.js.html#line258">line 258</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line286">line 286</a>
     </li></ul></dd>
     
 
@@ -449,7 +482,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game_class.js.html">game_class.js</a>, <a href="game_class.js.html#line265">line 265</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line293">line 293</a>
     </li></ul></dd>
     
 
@@ -511,7 +544,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game_class.js.html">game_class.js</a>, <a href="game_class.js.html#line230">line 230</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line258">line 258</a>
     </li></ul></dd>
     
 
@@ -573,7 +606,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game_class.js.html">game_class.js</a>, <a href="game_class.js.html#line237">line 237</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line265">line 265</a>
     </li></ul></dd>
     
 
@@ -635,7 +668,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game_class.js.html">game_class.js</a>, <a href="game_class.js.html#line272">line 272</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line300">line 300</a>
     </li></ul></dd>
     
 
@@ -697,7 +730,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game_class.js.html">game_class.js</a>, <a href="game_class.js.html#line279">line 279</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line307">line 307</a>
     </li></ul></dd>
     
 
@@ -759,7 +792,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game_class.js.html">game_class.js</a>, <a href="game_class.js.html#line244">line 244</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line272">line 272</a>
     </li></ul></dd>
     
 
@@ -821,7 +854,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game_class.js.html">game_class.js</a>, <a href="game_class.js.html#line251">line 251</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line279">line 279</a>
     </li></ul></dd>
     
 
@@ -950,7 +983,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game_class.js.html">game_class.js</a>, <a href="game_class.js.html#line223">line 223</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line247">line 247</a>
     </li></ul></dd>
     
 
@@ -1014,13 +1047,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Backlog.html">Backlog</a></li><li><a href="Game.html">Game</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#deleteItem">deleteItem</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#setItem">setItem</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Backlog.html">Backlog</a></li><li><a href="Game.html">Game</a></li><li><a href="User.html">User</a></li></ul><h3>Global</h3><ul><li><a href="global.html#backlogSelected">backlogSelected</a></li><li><a href="global.html#deleteItem">deleteItem</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#setItem">setItem</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Dec 16 2024 14:20:48 GMT+0100 (heure normale d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 17 2024 10:53:59 GMT+0100 (heure normale d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>
