@@ -44,7 +44,12 @@ function backlogSelected(backlog) {
     const backlogButton = backlogData.childNodes[5]
 
     backlogTitle.textContent = "Nom du backlog : " + backlog.title
-    backlogDescription.textContent = backlog.description != null && backlog.description !== "" ? "Descrpition :" + backlog.description : "Description : Pas de description"
+    console.log(backlogDescription.childNodes);
+    if (backlogDescription.childNodes.length >= 2) {
+        backlogDescription.removeChild(backlogDescription.lastChild);
+    }
+    const descriptionText = document.createTextNode(backlog.description != null && backlog.description !== "" ? backlog.description : "Pas de description")
+    backlogDescription.appendChild(descriptionText)
 
     if (backlog.finalRate === -2) {
         backlogButton.textContent = "Commencer le vote de la fonctionnalité"

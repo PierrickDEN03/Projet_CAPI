@@ -86,3 +86,8 @@ footer {
     text-align: center;
     padding: 1rem;
 }
+
+p.bold,
+span.bold {
+    font-weight: bold;
+}

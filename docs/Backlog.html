@@ -192,7 +192,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string, number></span>
+<span class="param-type">Array.&lt;<a href="global.html#RateObject">RateObject</a>></span>
 
 
             
@@ -212,7 +212,7 @@
 
             
 
-            <td class="description last"><p>Note attribuée à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté, chaque note est liée à l'id d'un User (facultatif)</p></td>
+            <td class="description last"><p>Notes attribuées à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté, chaque note est liée à l'id d'un User (facultatif)</p></td>
         </tr>
 
     
@@ -420,7 +420,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line286">line 286</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line287">line 287</a>
     </li></ul></dd>
     
 
@@ -482,7 +482,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line293">line 293</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line294">line 294</a>
     </li></ul></dd>
     
 
@@ -544,7 +544,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line258">line 258</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line259">line 259</a>
     </li></ul></dd>
     
 
@@ -606,7 +606,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line265">line 265</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line266">line 266</a>
     </li></ul></dd>
     
 
@@ -624,13 +624,13 @@
 
         
             
-<h4 class="name" id="rate"><span class="type-signature"></span>rate<span class="type-signature"></span></h4>
+<h4 class="name" id="rates"><span class="type-signature"></span>rates<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    <p>Retourne la note de la fonctionnalité</p>
+    <p>Instancie toutes les notes de la fonctionnalité</p>
 </div>
 
 
@@ -668,69 +668,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line300">line 300</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="rate"><span class="type-signature"></span>rate<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <p>Instancie la note de la fonctionnalité</p>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line307">line 307</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line325">line 325</a>
     </li></ul></dd>
     
 
@@ -792,7 +730,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line272">line 272</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line273">line 273</a>
     </li></ul></dd>
     
 
@@ -854,7 +792,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line279">line 279</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line280">line 280</a>
     </li></ul></dd>
     
 
@@ -875,6 +813,321 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getRate"><span class="type-signature"></span>getRate<span class="signature">(i)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Retourne une note de la fonctionnalité à partir de son index</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>i</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>L'index de la note</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line303">line 303</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setRate"><span class="type-signature"></span>setRate<span class="signature">(i, rate)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Instancie une note de la fonctionnalité à partir de son index</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>i</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>L'index de la note</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#RateObject">RateObject</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Note de la fonctionnalité entre 0 et 100, -1 pour non noté, avec l'id de l'utilisateur</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line311">line 311</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
@@ -983,7 +1236,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line247">line 247</a>
+        <a href="data_game_class.js.html">data/game_class.js</a>, <a href="data_game_class.js.html#line248">line 248</a>
     </li></ul></dd>
     
 
@@ -1053,7 +1306,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 17 2024 10:53:59 GMT+0100 (heure normale d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 17 2024 11:39:03 GMT+0100 (heure normale d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -36,20 +36,20 @@ export class Game {
      * @returns {Game}
      */
     static initFromId(id) {
-        let backlogsId = getItem(`gameBacklogs${id}`)
-        let backlogs = undefined
-        if (backlogsId != null) {
-            backlogs = []
-            for (let backlogId of backlogsId) {
-                backlogs.push(Backlog.initFromId(backlogId))
-            }
-        }
         let usersId = getItem(`gameUsers${id}`)
         let users = undefined
         if (usersId != null) {
             users = []
             for (let userId of usersId) {
                 users.push(User.initFromId(userId))
+            }
+        }
+        let backlogsId = getItem(`gameBacklogs${id}`)
+        let backlogs = undefined
+        if (backlogsId != null) {
+            backlogs = []
+            for (let backlogId of backlogsId) {
+                backlogs.push(Backlog.initFromId(backlogId))
             }
         }
         return new Game(getItem(`gameName${id}`), getItem(`gameMode${id}`), users, backlogs, id)
@@ -215,7 +215,7 @@ export class Backlog {
     #id = undefined
     #title = undefined
     #description = undefined
-    #rate = []
+    #rates = []
     #finalRate = -2
 
     /**
@@ -223,17 +223,18 @@ export class Backlog {
      * @param {string} id Id de la fonctionnalité
      * @param {string} title Titre de la fonctionnalité
      * @param {string} [description] Description (facultatif)
-     * @param {Array<string, number>} [rates] Note attribuée à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté, chaque note est liée à l'id d'un User (facultatif)
+     * @param {RateObject[]} [rates] Notes attribuées à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté, chaque note est liée à l'id d'un User (facultatif)
      * @param {number} [finalRate] Note finale de la fonctionnalité, de 0 à 100, -1 pour en cours de notation, -2 pour non noté
      * @param {string} [id] Donner l'id seulement si l'on définit une fonctionnalité déjà existante
      */
-    constructor(title, description, rate, id) {
+    constructor(title, description, rates, finalRate, id) {
         if (title !== undefined) {
             this.id = id === undefined ? self.crypto.randomUUID() : id
             this.title = title
             this.description = description
             //Rate sera undefined lors de l'instanciation de la classe, puis rempli via le jeu
-            this.rate = rate
+            this.rates = rates
+            this.finalRate = finalRate
         } else {
             throw new Error("Le title ou l'id est obligatoire pour définir un Backlog")
         }
@@ -249,7 +250,7 @@ export class Backlog {
         if (getItem(`backlogRate${id}`) != null) {
             rate = getItem(`backlogRate${id}`)
         }
-        return new Backlog(getItem(`backlogTitle${id}`), getItem(`backlogDescription${id}`), rate, id)
+        return new Backlog(getItem(`backlogTitle${id}`), getItem(`backlogDescription${id}`), rate, -2, id)
     }
 
     /**
@@ -295,23 +296,43 @@ export class Backlog {
         setItem(`backlogDescription${this.#id}`, this.#description)
     }
     /**
-     * Retourne la note de la fonctionnalité
+     * Retourne une note de la fonctionnalité à partir de son index
+     * @param {number} i L'index de la note
+     * @returns {number}
      */
-    get rate() {
-        return this.#rate
+    getRate(i) {
+        return this.#rates[i]
     }
     /**
-     * Instancie la note de la fonctionnalité
-     * @param {number} rate Note de la fonctionnalité
+     * Instancie une note de la fonctionnalité à partir de son index
+     * @param {number} i L'index de la note
+     * @param {RateObject} rate Note de la fonctionnalité entre 0 et 100, -1 pour non noté, avec l'id de l'utilisateur
      */
-    set rate(rate) {
+    setRate(i, rate) {
         if (rate < -1 || rate > 100) {
             throw new Error("La note doit être comprise entre 0 et 100")
         }
         if (rate != null) {
-            this.#rate = rate
-            setItem(`backlogRate${this.#id}`, this.#rate)
+            this.#rates[i] = rate
+            setItem(`backlogRate${this.#id}`, this.#rates)
         }
+    }
+
+    /**
+     * Instancie toutes les notes de la fonctionnalité
+     * @param {RateObject[]} rates Liste des notes attribuées à la fonctionnalité
+     */
+    set rates(rates) {
+        if (rates != null) {
+            for (let i = 0; i < rates.length; i++) {
+                this.setRate(i, rates[i])
+            }
+            setItem(`backlogRate${this.#id}`, this.#rates)
+        }
+    }
+
+    get rates() {
+        return this.#rates
     }
 
     get finalRate() {
@@ -319,9 +340,17 @@ export class Backlog {
     }
 
     set finalRate(finalRate) {
-        if (finalRate < 0 || finalRate > 100) {
-            throw new Error("La note finale doit être comprise entre 0 et 100")
+        if (finalRate != null) {
+            if (finalRate < -2 || finalRate > 100) {
+                throw new Error("La note finale doit être comprise entre 0 et 100")
+            }
+            this.#finalRate = finalRate
         }
-        this.#finalRate = finalRate
     }
 }
+
+/**
+ * @typedef {Object} RateObject
+ * @property {number} value La valeur de la note, entre 0 et 100, et -1 pour non noté.
+ * @property {string} user L'id de l'utilisateur qui a noté.
+ */
