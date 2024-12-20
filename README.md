@@ -9,3 +9,7 @@ Ensuite, installer les dépendances avec la commande :
 >npm install
 
 Pour lancer l'application, il faut un serveur local sur le pc car les navigateurs empêchent le fonctionnement les requêtes Cross Origin (CORS policy). Pour cela, vous pouvez simplement lancer l'application avec le plugin "Live Server" de Visual Studio Code
+
+## Rapport
+
+Notre rapport est disponible dans le fichier ``Rapport_Babolat_Dennemont_CAPI.pdf`` qui est à la racine du projet.
