@@ -16,8 +16,35 @@ cartesElements.forEach((carteElement, i) => {
         backlog.setRateValue(currentIndex, cardValue)
         if (currentIndex == backlog.rates.length - 1) {
             const game = Game.initFromId(gameId)
-            game.isRateOver(backlog)
-            window.location.href = "../game-resume/game-resume.html?id=" + gameId
+            if (backlog.isAllCafe()) {
+                // Convertir l'objet JavaScript en une chaîne JSON
+                const jsonString = game.jsonExport();
+
+                // Créer un Blob à partir de la chaîne JSON
+                const blob = new Blob([jsonString], { type: 'application/json' });
+
+                // Créer une URL pour le Blob
+                const url = URL.createObjectURL(blob);
+
+                // Créer un élément <a> (lien) dynamique
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `game_${game.name}.json`;
+
+                // Ajouter le lien au document et déclencher le clic
+                document.body.appendChild(a);
+                a.click();
+
+                // Supprimer le lien du document
+                document.body.removeChild(a);
+
+                // Libérer l'URL créée
+                URL.revokeObjectURL(url);
+                window.location.href = "../index.html"
+            } else {
+                game.setFinalRate(backlog)
+                window.location.href = "../game-resume/game-resume.html?id=" + gameId
+            }
         } else {
             displayUser(User.initFromId(backlog.rates[currentIndex + 1].user))
         }

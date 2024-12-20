@@ -61,8 +61,9 @@ export class Game {
      */
     static initFromJson(json) {
         let users = []
+
         for (let user of json.newGame.users) {
-            users.push(new User(user.name))
+            users.push(new User(user))
         }
         let backlogs = []
         for (let backlog of json.newGame.backlogs) {
@@ -72,7 +73,33 @@ export class Game {
         return new Game(json.newGame.name, json.newGame.mode, users, backlogs)
     }
 
-    static restartFromJson(json) { }
+    static restartFromJson(json) {
+        let users = []
+        for (let user of json.game.users) {
+            users.push(new User(user.name, user.id))
+        }
+        let backlogs = []
+        for (let backlog of json.game.backlogs) {
+            backlogs.push(new Backlog(backlog.title, backlog.description, backlog.rates, backlog.finalRate, backlog.id, backlog.isFirstTurn))
+        }
+        return new Game(json.game.name, json.game.mode, users, backlogs, json.game.id)
+    }
+
+    /**
+     * Fonction pour exporter une game en JSON
+     * @returns {string} L'objet JSON sous forme de string
+     */
+    jsonExport() {
+        let users = []
+        for (let user of this.#users) {
+            users.push({ name: user.name, id: user.id })
+        }
+        let backlogs = []
+        for (let backlog of this.#backlogs) {
+            backlogs.push({ id: backlog.id, title: backlog.title, description: backlog.description, rates: backlog.rates, finalRate: backlog.finalRate, isFirstTurn: backlog.isFirstTurn })
+        }
+        return JSON.stringify({ game: { name: this.#name, mode: this.#mode, users: users, backlogs: backlogs } })
+    }
 
     /**
     * Retourne l'id de la game
@@ -182,11 +209,10 @@ export class Game {
     }
 
     /**
-     * Retourne true si le backlog est voté, sinon false
+     * Défini le finalRate du backlog en fonction du mode de vote de la game
      * @param {Backlog} backlog 
-     * @returns {boolean}
      */
-    isRateOver(backlog) {
+    setFinalRate(backlog) {
         if (!backlog.isFirstTurn) {
             switch (this.#mode) {
                 case "moyenne":
@@ -204,11 +230,6 @@ export class Game {
         } else {
             this.unanimtyRate(backlog)
             backlog.passedFirstTurn()
-        }
-        if (this.#backlogs.every(backlog => backlog.finalRate !== -1)) {
-            return true
-        } else {
-            return false
         }
     }
 
@@ -497,6 +518,16 @@ export class Backlog {
     }
 
     /**
+     * Retourne la valeur de la note à partir de l'utilisateur
+     * @param {User} user 
+     * @returns {number} La valeur de la note
+     */
+    valueRateFromUser(user) {
+        let rate = this.#rates.find(rate => rate.user === user.id)
+        return rate.value
+    }
+
+    /**
      * Retourne la note finale de la fonctionnalité
      * @returns {number} Note finale de la fonctionnalité entre 0 et 100, -1 pour en cours de notation, -2 pour non noté
      */
@@ -554,6 +585,22 @@ export class Backlog {
             rates.push({ value: -1, user: user.id })
         }
         return rates
+    }
+
+    /**
+     * Retourne true si toutes les notes sont égales à café, false sinon
+     * @returns {boolean}
+     */
+    isCafe() {
+        if (this.#rates.every(rate => rate.value === "cafe")) {
+            return true
+        } else {
+            this.rates = this.rates.map(rate => {
+                if (rate.value === "cafe") return { value: -1, user: rate.user }
+                else return rate
+            })
+            return false
+        }
     }
 }
 

@@ -8,6 +8,4 @@ Pour lancer l'application, il faut avoir node ou installer node au lien suivant 
 Ensuite, installer les dépendances avec la commande :
 >npm install
 
-Pour lancer l'application vous avez deux options :
-- Ouvrir le fichier views/index.html dans un navigateur web
-- Lancer un live serveur sur le fichier views/index.html avec le plugin live server de visual studio code
+Pour lancer l'application, il faut un serveur local sur le pc car les navigateurs empêchent le fonctionnement les requêtes Cross Origin (CORS policy). Pour cela, vous pouvez simplement lancer l'application avec le plugin "Live Server" de Visual Studio Code

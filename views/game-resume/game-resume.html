@@ -6,17 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planning Poker - Cartes</title>
     <script type="module" src="game-resume.js" defer></script>
+    <script type="module" src="../nav-bar.js" defer></script>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="./game-resume.css">
 </head>
 
 <body>
     <header class="nav-bar">
-        <a href="../index.html" class="menu">Accueil</a>
-        <a href="../game-resume/game-resume.html" class="menu">Résumé de la partie en cours</a>
+        <a id="accueil-game-link" href="../index.html" class="menu">Accueil</a>
+        <a id="resume-game-link" href="../game-resume/game-resume.html" class="menu">Résumé de la partie en cours</a>
     </header>
     <main>
-        <h1 id="resume-title">Resume de la partie : </h1>
+        <h1 id="resume-title"></h1>
         <div class="left-aside">
             <aside id="backlogs-container">
             </aside>
@@ -24,7 +25,11 @@
                 <h3></h3>
                 <p><span class="bold">Description : </span></p>
                 <button id="backlog-vote"></button>
-                <p id="final-note"></p>
+                <div id="backlog-votes">
+                    <p class="bold">Vote des joueurs</p>
+                    <div class="cards-container"></div>
+                </div>
+                <p class="bold" id="final-note"></p>
             </div>
         </div>
     </main>

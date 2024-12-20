@@ -38,13 +38,12 @@ function displayData() {
  * @param {Backlog} backlog
  */
 function backlogSelected(backlog) {
-    console.log(backlog.isFirstTurn)
     const backlogData = document.getElementById("backlog-data")
     const backlogTitle = backlogData.childNodes[1]
     const backlogDescription = backlogData.childNodes[3]
     const backlogButton = backlogData.childNodes[5]
 
-    backlogTitle.textContent = "Nom du backlog : " + backlog.title
+    backlogTitle.textContent = backlog.title
     if (backlogDescription.childNodes.length >= 2) {
         backlogDescription.removeChild(backlogDescription.lastChild);
     }
@@ -71,10 +70,39 @@ function backlogSelected(backlog) {
             backlogButton.textContent = "Le vote de la fonctionnalité a déjà été effectué"
             break;
     }
+    displayNotes(backlog)
     displayFinalNote(backlog.finalRate)
 }
 
 function displayFinalNote(finalNote) {
     const finalNoteElement = document.getElementById("final-note")
     finalNoteElement.textContent = finalNote < 0 ? "" : "Note finale : " + finalNote
+}
+
+function displayNotes(backlog) {
+    const notesContainer = document.getElementById("backlog-votes")
+    if (backlog.finalRate === -2) {
+        notesContainer.style.display = "none"
+    } else {
+        notesContainer.style.display = "block"
+        const cardsContainer = document.querySelector(".cards-container")
+        while (cardsContainer.firstChild) {
+            cardsContainer.removeChild(cardsContainer.lastChild);
+        }
+        for (let user of game.users) {
+            const value = backlog.valueRateFromUser(user)
+            const cardPath = value === -1 ? "../../cartes/cartes_interro.svg" : `../../cartes/cartes_${value}.svg`
+            const newCard = document.createElement("div")
+            newCard.classList.add("card")
+            newCard.dataset.value = value
+            const newCardText = document.createElement("p")
+            newCardText.textContent = user.name
+            const newCardImage = document.createElement("img")
+            newCardImage.src = cardPath
+            newCardImage.alt = "Carte " + value
+            newCard.appendChild(newCardText)
+            newCard.appendChild(newCardImage)
+            cardsContainer.insertAdjacentElement("beforeend", newCard)
+        }
+    }
 }

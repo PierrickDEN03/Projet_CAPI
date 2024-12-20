@@ -26,3 +26,34 @@ aside#backlogs-container {
     justify-items: center;
     border-right: solid 1px black;
 }
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-items: center;
+    max-width: 100%;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin: 2rem;
+    width: 100px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px;
+    border: 2px solid #4CAF50;
+    transition: transform 0.2s;
+}
+
+div#backlog-data {
+    margin: 0 1rem;
+}

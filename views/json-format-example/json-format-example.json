@@ -9,16 +9,16 @@
         ],
         "backlogs": [
             {
-                "name": "Backlog 1",
-                "description": "Description du backlog 1"
+                "title": "Fonctionnalité 1",
+                "description": "Description de la fonctionnalité 1"
             },
             {
-                "name": "Backlog 2",
-                "description": "Description du backlog 2"
+                "title": "Backlog 2",
+                "description": "Description de la fonctionnalité 2"
             },
             {
-                "name": "Backlog 3",
-                "description": "Description du backlog 3"
+                "title": "Backlog 3",
+                "description": "Description de la fonctionnalité 3"
             }
         ]
     }
