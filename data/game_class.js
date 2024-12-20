@@ -142,7 +142,7 @@ export class Game {
     /**
      * Retourne le mode de vote actuel de la game, retourne donc unanimite si c'est le premier tour de vote, meme si le mode est différent
      * @param {Backlog} backlog 
-     * @returns {{'moyenne'|'mediane'|'unanimite'}}
+     * @returns {'moyenne'|'mediane'|'unanimite'}
      */
     getCurrentMode(backlog) {
         if (backlog.isFirstTurn) {
