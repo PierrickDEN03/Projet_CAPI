@@ -360,7 +360,7 @@ export class Backlog {
      * Si l'id est défini avec undefined, alors on instancie un objet Backlog à partir des paramètres title, description et rate, sinon on instancie en récupérant les données enregistrer à partir de l'id
      * @param {string} title Titre de la fonctionnalité
      * @param {string} [description] Description (facultatif)
-     * @param {RateObject[]} [rates] Notes attribuées à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté, et cafe pour faire une pause, chaque note est liée à l'id d'un User (facultatif)
+     * @param {RateObject[]} [rates] Notes attribuées à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté, chaque note est liée à l'id d'un User (facultatif)
      * @param {number} [finalRate] Note finale de la fonctionnalité, de 0 à 100, -1 pour en cours de notation, -2 pour non noté
      * @param {string} [id] Donner l'id seulement si l'on définit une fonctionnalité déjà existante
      * @param {boolean} [isFirstTurn] Booléen pour savoir si c'est le premier tour de vote
@@ -446,7 +446,7 @@ export class Backlog {
     /**
      * Instancie une note de la fonctionnalité à partir de son index
      * @param {number} i L'index de la note
-     * @param {RateObject} rate Note de la fonctionnalité entre 0 et 100, -1, et cafe pour faire une pause pour non noté, avec l'id de l'utilisateur
+     * @param {RateObject} rate Note de la fonctionnalité entre 0 et 100, -1 pour non noté, avec l'id de l'utilisateur
      */
     setRate(i, rate) {
         if (rate < -1 || rate > 100 || rate == null) {
@@ -470,7 +470,7 @@ export class Backlog {
     /**
      * Set la valeur de la note de la fonctionnalité à partir de son index
      * @param {number} i L'index de la note
-     * @param {number} rate Note de la fonctionnalité entre 0 et 100, -1, et cafe pour faire une pause pour non noté
+     * @param {number} rate Note de la fonctionnalité entre 0 et 100, -1 pour non noté
      */
     setRateValue(i, rate) {
         if (rate < -1 || rate > 100 || rate == null) {
@@ -480,10 +480,6 @@ export class Backlog {
             this.#rates[i].value = rate
             setItem(`backlogRate${this.#id}`, this.#rates)
         }
-    }
-
-    isAllCafe() {
-        return this.#rates.every(rate => rate.value === "cafe")
     }
 
     /**
@@ -585,22 +581,6 @@ export class Backlog {
             rates.push({ value: -1, user: user.id })
         }
         return rates
-    }
-
-    /**
-     * Retourne true si toutes les notes sont égales à café, false sinon
-     * @returns {boolean}
-     */
-    isCafe() {
-        if (this.#rates.every(rate => rate.value === "cafe")) {
-            return true
-        } else {
-            this.rates = this.rates.map(rate => {
-                if (rate.value === "cafe") return { value: -1, user: rate.user }
-                else return rate
-            })
-            return false
-        }
     }
 }
 

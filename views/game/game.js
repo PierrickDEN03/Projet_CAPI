@@ -4,19 +4,19 @@ const gameId = new URLSearchParams(window.location.search).get('id');
 const backlogId = new URLSearchParams(window.location.search).get('backlog');
 const backlog = Backlog.initFromId(backlogId)
 let currentIndex = -1
+let cafe = []
 console.log(backlog.rates)
 displayUser(User.initFromId(backlog.rates[0].user))
+const game = Game.initFromId(gameId)
 
 //Pour chaque carte, on ajoute un event listener qui appelle la fonction lorsqu'on clique dessus
 const cartesElements = document.querySelectorAll('.card')
 cartesElements.forEach((carteElement, i) => {
     carteElement.addEventListener('click', (e) => {
-        currentIndex++
-        const cardValue = e.currentTarget.dataset.value == "interro" ? -1 : parseInt(e.currentTarget.dataset.value)
-        backlog.setRateValue(currentIndex, cardValue)
-        if (currentIndex == backlog.rates.length - 1) {
-            const game = Game.initFromId(gameId)
-            if (backlog.isAllCafe()) {
+        if (e.currentTarget.dataset.value === "cafe") {
+            currentIndex++
+            cafe.push(1)
+            if (cafe.length == game.users.length) {
                 // Convertir l'objet JavaScript en une chaîne JSON
                 const jsonString = game.jsonExport();
 
@@ -41,12 +41,19 @@ cartesElements.forEach((carteElement, i) => {
                 // Libérer l'URL créée
                 URL.revokeObjectURL(url);
                 window.location.href = "../index.html"
-            } else {
+            }
+            displayUser(User.initFromId(backlog.rates[currentIndex + 1].user))
+        } else {
+            currentIndex++
+            const cardValue = e.currentTarget.dataset.value == "interro" ? -1 : parseInt(e.currentTarget.dataset.value)
+
+            backlog.setRateValue(currentIndex, cardValue)
+            if (currentIndex == backlog.rates.length - 1) {
                 game.setFinalRate(backlog)
                 window.location.href = "../game-resume/game-resume.html?id=" + gameId
+            } else {
+                displayUser(User.initFromId(backlog.rates[currentIndex + 1].user))
             }
-        } else {
-            displayUser(User.initFromId(backlog.rates[currentIndex + 1].user))
         }
     })
 })
