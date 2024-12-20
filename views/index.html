@@ -5,31 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planning Poker</title>
-    <script src="./index/index.js" defer></script>
+    <script type="module" src="./index/index.js" defer></script>
+    <script type="module" src="./nav-bar.js" defer></script>
     <link rel="stylesheet" href="./styles.css">
 </head>
 
 <body>
-    <header>
-        <h1>Planning Poker</h1>
-        <nav>
-            <a href="#about">À propos</a>
-            <a href="#contact">Contact</a>
-        </nav>
+    <header class="nav-bar">
+        <a id="accueil-game-link" href="./index.html" class="menu">Accueil</a>
+        <a id="resume-game-link" href="./game-resume/game-resume.html" class="menu">Résumé de la partie en cours</a>
     </header>
-
     <main>
+        <h1>Planning Poker</h1>
         <section>
             <h2>Bienvenue sur Planning Poker</h2>
             <p>Choisissez une option :</p>
 
             <div class="options">
-                <a href="./create-game/create-game.html"><button id="create-game-btn">Créer une nouvelle
+                <a id="create-game-btn"><button>Créer une nouvelle
                         partie</button></a>
                 <a href="./load-game/load-game.html"><button id="load-game-btn">Charger une partie
                         existante</button></a>
             </div>
         </section>
+        <div class="centered-modal hidden" id="create-choice">
+            <div class="modal-content">
+                <div class="modal-cross">X</div>
+                <h3>Comment voulez vous créer la partie : </h3>
+                <a href="./create-game/create-game.html"><button id="interfaceButton">Via l'interface</button></a>
+                <a href="./create-game-from-json/create-game-from-json.html"><button id="jsonButton">Via un fichier
+                        Json</button></a>
+            </div>
+        </div>
     </main>
 
     <footer>

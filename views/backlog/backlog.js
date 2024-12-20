@@ -36,7 +36,7 @@ document.getElementById("add-backlog-form").addEventListener("submit", (e) => {
         let backlogTitle = document.getElementsByName('backlog-name-' + (i + 1))[0]
         let backlogDescription = document.getElementsByName('backlog-description-' + (i + 1))[0]
 
-        backlogs.push(new Backlog(backlogTitle.value, backlogDescription.value))
+        backlogs.push(new Backlog(backlogTitle.value, backlogDescription.value, Backlog.initRatesFromUsers(game.users)))
     }
     game.backlogs = backlogs
 

@@ -1,8 +1,14 @@
-// Gestion des boutons
-// document.getElementById("create-game-btn").addEventListener("click", function () {
-//     window.location.href = "../create-game/create-game.html";
-// });
+const centeredModal = document.querySelector('#create-choice.centered-modal');
+const createGameBtn = document.getElementById('create-game-btn');
+const modalCross = document.querySelector('#create-choice .modal-cross');
 
-// document.getElementById("load-game-btn").addEventListener("click", function () {
-//     window.location.href = "../load-game/load-game.html";
-// });
+createGameBtn.onclick = toggleModalVisibility;
+modalCross.onclick = toggleModalVisibility;
+
+function toggleModalVisibility() {
+    centeredModal.classList.toggle('hidden')
+}
+
+const gameId = new URLSearchParams(window.location.search).get('id');
+const resumeGameLink = document.getElementById('resume-game-link');
+const accueilGameLink = document.getElementById('accueil-game-link');

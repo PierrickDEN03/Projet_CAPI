@@ -6,16 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planning Poker - Cartes</title>
     <script type="module" src="game.js" defer></script>
+    <script type="module" src="../nav-bar.js" defer></script>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="./game.css">
 </head>
 
 <body>
-    <header>
-        <h1>Planning Poker - Sélectionnez votre carte</h1>
+    <header class="nav-bar">
+        <a id="accueil-game-link" href="../index.html" class="menu">Accueil</a>
+        <a id="resume-game-link" href="../game-resume/game-resume.html" class="menu">Résumé de la partie en cours</a>
     </header>
     <main>
-        <h2 id="user-title">Vote de l'utilisateur : </h2>
+        <h1></h1>
+        <h2 id="user-title">Sélectionnez votre carte : </h2>
         <div class="cards-container">
             <!-- Cartes : Ajoutez le contenu ici -->
             <div class="card" data-value="0">

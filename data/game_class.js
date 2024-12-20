@@ -10,7 +10,6 @@ export class Game {
 
     /**
      * Instancie un nouvel objet à partir de ses paramètres name, mode, users et back
-     * @param {string} id Id de la game, généré automatiquement si non défini
      * @param {string} name Nom de la game en cours
      * @param {'moyenne'|'mediane'|'unanimite'} mode Défini le mode du vote, soit moyenne, mediane ou unanimite
      * @param {User[]} [users] Liste d'objet User
@@ -56,6 +55,26 @@ export class Game {
     }
 
     /**
+     * Fonction pour initialiser une game à partir de l'objet d'un fichier JSON
+     * @param {Object} json Objet JSON
+     * @returns {Game}
+     */
+    static initFromJson(json) {
+        let users = []
+        for (let user of json.newGame.users) {
+            users.push(new User(user.name))
+        }
+        let backlogs = []
+        for (let backlog of json.newGame.backlogs) {
+            const finalRate = backlog.finalRate === undefined ? -2 : backlog.finalRate
+            backlogs.push(new Backlog(backlog.title, backlog.description, Backlog.initRatesFromUsers(users), finalRate))
+        }
+        return new Game(json.newGame.name, json.newGame.mode, users, backlogs)
+    }
+
+    static restartFromJson(json) { }
+
+    /**
     * Retourne l'id de la game
     * @returns {number}
     */
@@ -94,8 +113,21 @@ export class Game {
     }
 
     /**
+     * Retourne le mode de vote actuel de la game, retourne donc unanimite si c'est le premier tour de vote, meme si le mode est différent
+     * @param {Backlog} backlog 
+     * @returns {{'moyenne'|'mediane'|'unanimite'}}
+     */
+    getCurrentMode(backlog) {
+        if (backlog.isFirstTurn) {
+            return "unanimite"
+        } else {
+            return this.#mode
+        }
+    }
+
+    /**
      * Retourne le nom de tous les users
-     * @returns {string[]} L'ensemble des noms des user
+     * @returns {User[]} L'ensemble des noms des user
      */
     get users() {
         return this.#users
@@ -148,6 +180,88 @@ export class Game {
         }
         return names
     }
+
+    /**
+     * Retourne true si le backlog est voté, sinon false
+     * @param {Backlog} backlog 
+     * @returns {boolean}
+     */
+    isRateOver(backlog) {
+        if (!backlog.isFirstTurn) {
+            switch (this.#mode) {
+                case "moyenne":
+                    this.averageRate(backlog)
+                    break
+                case "mediane":
+                    this.medianRate(backlog)
+                    break
+                case "unanimite":
+                    this.unanimtyRate(backlog)
+                    break
+                default:
+                    throw new Error("Le mode de vote n'est pas reconnnaissable")
+            }
+        } else {
+            this.unanimtyRate(backlog)
+            backlog.passedFirstTurn()
+        }
+        if (this.#backlogs.every(backlog => backlog.finalRate !== -1)) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    /**
+     * Retourne un boolean pour savoir si la note est votée à l'unanimité, et donne la valeur de la note à finalRate
+     * @param {Backlog} backlog Le backlog à vérifier
+     */
+    unanimtyRate(backlog) {
+        const rates = backlog.rates.map(rate => rate.value)
+        if (rates.every(rate => rate === rates[0])) {
+            backlog.finalRate = rates[0]
+        } else {
+            // Si la note n'est pas votée à l'unanimité, on met la note finale à -1 pour dire que le vote est en cours
+            backlog.finalRate = -1
+        }
+    }
+
+    /**
+     * Donne la valeur de la medianne des notes à finalRate
+     * @param {Backlog} backlog Le backlog à vérifier
+     */
+    medianRate(backlog) {
+        const rates = backlog.rates.map(rate => rate.value)
+        const sortedRates = rates.sort((a, b) => a - b)
+        const middle = Math.floor(sortedRates.length / 2)
+        if (sortedRates.length % 2 === 0) {
+            // Cela peut renvoyer une note qui n'est pas dans la liste des cartes
+            backlog.finalRate = Math.floor((sortedRates[middle - 1] + sortedRates[middle]) / 2)
+        } else {
+            backlog.finalRate = sortedRates[middle]
+        }
+    }
+
+    /**
+     * Donne la valeur de la moyenne des notes à finalRate, cela peut renvoyer une note qui n'est pas dans la liste des cartes
+     * @param {Backlog} backlog Le backlog à vérifier
+     */
+    averageRate(backlog) {
+        const rates = backlog.rates.map(rate => rate.value)
+        backlog.finalRate = Math.floor(rates.reduce((acc, rate) => acc + rate, 0) / rates.length)
+    }
+
+    /**
+     * Retourne true si tous les paramètres sont initialisés, false sinon
+     * @returns {boolean}
+    */
+    isInitStepByStepOver() {
+        if (this.#name !== undefined && this.#mode !== undefined && this.#users.length > 0 && this.#backlogs.length > 0) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 
@@ -157,7 +271,6 @@ export class User {
     #name = undefined
     /**
      * Défini avec le nom de l'utilisateur ou le ou avec l'id pour récupérer un utilisateur déjà existant
-     * @param {string} id Id du joueur
      * @param {string} name Nom du joueur
      * @param {string} [id] Donner l'id seulement si l'on définit un utilisateur déjà existant
      */
@@ -166,7 +279,7 @@ export class User {
             this.id = id === undefined ? self.crypto.randomUUID() : id
             this.name = name
         } else {
-            throw new Error("Le name ou l'id est obligatoire pour définir un User")
+            throw new Error("Le name est obligatoire pour définir un User")
         }
     }
 
@@ -217,24 +330,28 @@ export class Backlog {
     #description = undefined
     #rates = []
     #finalRate = -2
+    /**
+     * Booléen pour savoir si c'est le premier tour de vote
+     */
+    #isFirstTurn
 
     /**
      * Si l'id est défini avec undefined, alors on instancie un objet Backlog à partir des paramètres title, description et rate, sinon on instancie en récupérant les données enregistrer à partir de l'id
-     * @param {string} id Id de la fonctionnalité
      * @param {string} title Titre de la fonctionnalité
      * @param {string} [description] Description (facultatif)
-     * @param {RateObject[]} [rates] Notes attribuées à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté, chaque note est liée à l'id d'un User (facultatif)
+     * @param {RateObject[]} [rates] Notes attribuées à la fonctionnalité de 0 à 100, et -1 est l'état pour non noté, et cafe pour faire une pause, chaque note est liée à l'id d'un User (facultatif)
      * @param {number} [finalRate] Note finale de la fonctionnalité, de 0 à 100, -1 pour en cours de notation, -2 pour non noté
      * @param {string} [id] Donner l'id seulement si l'on définit une fonctionnalité déjà existante
+     * @param {boolean} [isFirstTurn] Booléen pour savoir si c'est le premier tour de vote
      */
-    constructor(title, description, rates, finalRate, id) {
+    constructor(title, description, rates, finalRate, id, isFirstTurn) {
         if (title !== undefined) {
             this.id = id === undefined ? self.crypto.randomUUID() : id
             this.title = title
             this.description = description
-            //Rate sera undefined lors de l'instanciation de la classe, puis rempli via le jeu
             this.rates = rates
             this.finalRate = finalRate
+            this.isFirstTurn = isFirstTurn == null ? true : isFirstTurn
         } else {
             throw new Error("Le title ou l'id est obligatoire pour définir un Backlog")
         }
@@ -250,7 +367,9 @@ export class Backlog {
         if (getItem(`backlogRate${id}`) != null) {
             rate = getItem(`backlogRate${id}`)
         }
-        return new Backlog(getItem(`backlogTitle${id}`), getItem(`backlogDescription${id}`), rate, -2, id)
+        const finalRate = getItem(`backlogFinalRate${id}`) == null ? -2 : getItem(`backlogFinalRate${id}`)
+        const isFirstTurn = getItem(`backlogIsFirstTurn${id}`) == null ? true : getItem(`backlogIsFirstTurn${id}`)
+        return new Backlog(getItem(`backlogTitle${id}`), getItem(`backlogDescription${id}`), rate, finalRate, id, isFirstTurn)
     }
 
     /**
@@ -298,7 +417,7 @@ export class Backlog {
     /**
      * Retourne une note de la fonctionnalité à partir de son index
      * @param {number} i L'index de la note
-     * @returns {number}
+     * @returns {RateObject}
      */
     getRate(i) {
         return this.#rates[i]
@@ -306,16 +425,44 @@ export class Backlog {
     /**
      * Instancie une note de la fonctionnalité à partir de son index
      * @param {number} i L'index de la note
-     * @param {RateObject} rate Note de la fonctionnalité entre 0 et 100, -1 pour non noté, avec l'id de l'utilisateur
+     * @param {RateObject} rate Note de la fonctionnalité entre 0 et 100, -1, et cafe pour faire une pause pour non noté, avec l'id de l'utilisateur
      */
     setRate(i, rate) {
-        if (rate < -1 || rate > 100) {
+        if (rate < -1 || rate > 100 || rate == null) {
             throw new Error("La note doit être comprise entre 0 et 100")
         }
-        if (rate != null) {
+        else {
             this.#rates[i] = rate
             setItem(`backlogRate${this.#id}`, this.#rates)
         }
+    }
+
+    /**
+     * Retourne la valeur de la note de la fonctionnalité à partir de son index
+     * @param {number} i L'index de la note
+     * @returns {number}
+     */
+    getRateValue(i) {
+        return this.#rates[i]
+    }
+
+    /**
+     * Set la valeur de la note de la fonctionnalité à partir de son index
+     * @param {number} i L'index de la note
+     * @param {number} rate Note de la fonctionnalité entre 0 et 100, -1, et cafe pour faire une pause pour non noté
+     */
+    setRateValue(i, rate) {
+        if (rate < -1 || rate > 100 || rate == null) {
+            throw new Error("La note doit être comprise entre 0 et 100")
+        }
+        else {
+            this.#rates[i].value = rate
+            setItem(`backlogRate${this.#id}`, this.#rates)
+        }
+    }
+
+    isAllCafe() {
+        return this.#rates.every(rate => rate.value === "cafe")
     }
 
     /**
@@ -331,21 +478,82 @@ export class Backlog {
         }
     }
 
+    /**
+     * Retourne toutes les notes de la fonctionnalité
+     * @returns {RateObject[]} Liste des notes attribuées à la fonctionnalité
+     */
     get rates() {
         return this.#rates
     }
 
+    /**
+     * Retourne l'index de la note à partir de l'utilisateur
+     * @param {User} user 
+     * @returns {number} L'index de la note
+     */
+    indexRateFromUser(user) {
+        let index = this.#rates.findIndex(rate => rate.user === user.id)
+        return index
+    }
+
+    /**
+     * Retourne la note finale de la fonctionnalité
+     * @returns {number} Note finale de la fonctionnalité entre 0 et 100, -1 pour en cours de notation, -2 pour non noté
+     */
     get finalRate() {
         return this.#finalRate
     }
 
+    /**
+     * Instancie la note finale de la fonctionnalitéote
+     * @param {number} finalRate Note finale de la fonctionnalité entre 0 et 100, -1 pour en cours de notation, -2 pour non noté
+     */
     set finalRate(finalRate) {
         if (finalRate != null) {
             if (finalRate < -2 || finalRate > 100) {
                 throw new Error("La note finale doit être comprise entre 0 et 100")
             }
             this.#finalRate = finalRate
+        } else {
+            this.#finalRate = -2
         }
+        setItem(`backlogFinalRate${this.#id}`, this.#finalRate)
+    }
+
+    /**
+     * Retourne true si c'est le premier tour de vote, sinon false
+     * @returns {boolean}
+     */
+    get isFirstTurn() {
+        return this.#isFirstTurn
+    }
+
+    /**
+     * Donne la valeur de isFirstTurn
+     * @param {boolean} isFirstTurn
+     */
+    set isFirstTurn(isFirstTurn) {
+        this.#isFirstTurn = isFirstTurn
+        setItem(`backlogIsFirstTurn${this.#id}`, this.#isFirstTurn)
+    }
+
+    passedFirstTurn() {
+        if (this.isFirstTurn == true) {
+            this.isFirstTurn = false
+        }
+    }
+
+    /**
+     * Retourne des notes intalisia (donc égale à -1) à partir des utilisateurs d'un objet utilisateurs
+     * @param {User[]} users Liste des utilisateurs
+     * @returns {RateObject[]} Liste des notes initialisées
+     */
+    static initRatesFromUsers(users) {
+        let rates = []
+        for (let user of users) {
+            rates.push({ value: -1, user: user.id })
+        }
+        return rates
     }
 }
 

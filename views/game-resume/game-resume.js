@@ -38,32 +38,43 @@ function displayData() {
  * @param {Backlog} backlog
  */
 function backlogSelected(backlog) {
+    console.log(backlog.isFirstTurn)
     const backlogData = document.getElementById("backlog-data")
     const backlogTitle = backlogData.childNodes[1]
     const backlogDescription = backlogData.childNodes[3]
     const backlogButton = backlogData.childNodes[5]
 
     backlogTitle.textContent = "Nom du backlog : " + backlog.title
-    console.log(backlogDescription.childNodes);
     if (backlogDescription.childNodes.length >= 2) {
         backlogDescription.removeChild(backlogDescription.lastChild);
     }
     const descriptionText = document.createTextNode(backlog.description != null && backlog.description !== "" ? backlog.description : "Pas de description")
     backlogDescription.appendChild(descriptionText)
-
-    if (backlog.finalRate === -2) {
-        backlogButton.textContent = "Commencer le vote de la fonctionnalité"
-        backlogButton.onclick = () => {
-            window.location.href = "../game/game.html?id=" + backlog.id + "&backlog=" + backlog.id
-        }
-    } else if (backlog.finalRate === -1) {
-        backlogButton.textContent = "Reprendre le vote de la fonctionnalité"
-        backlogButton.onclick = () => {
-            window.location.href = "../game/game.html?id=" + backlog.id + "&backlog=" + backlog.id
-        }
-    } else {
-        backlogButton.onclick = (e) => { e.preventDefault() }
-        backlogButton.classList.add("disabled")
-        backlogButton.textContent = "Le vote de la fonctionnalité a déjà été effectué"
+    switch (backlog.finalRate) {
+        case -2:
+            backlogButton.classList.remove("disabled")
+            backlogButton.textContent = "Commencer le vote de la fonctionnalité"
+            backlogButton.onclick = () => {
+                window.location.href = "../game/game.html?id=" + game.id + "&backlog=" + backlog.id
+            }
+            break;
+        case -1:
+            backlogButton.classList.remove("disabled")
+            backlogButton.textContent = "Reprendre le vote de la fonctionnalité"
+            backlogButton.onclick = () => {
+                window.location.href = "../game/game.html?id=" + game.id + "&backlog=" + backlog.id
+            }
+            break;
+        default:
+            backlogButton.onclick = (e) => { e.preventDefault() }
+            backlogButton.classList.add("disabled")
+            backlogButton.textContent = "Le vote de la fonctionnalité a déjà été effectué"
+            break;
     }
+    displayFinalNote(backlog.finalRate)
+}
+
+function displayFinalNote(finalNote) {
+    const finalNoteElement = document.getElementById("final-note")
+    finalNoteElement.textContent = finalNote < 0 ? "" : "Note finale : " + finalNote
 }

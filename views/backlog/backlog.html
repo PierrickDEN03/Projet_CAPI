@@ -5,15 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer une partie</title>
+    <script type="module" src="../nav-bar.js" defer></script>
     <script type="module" src="backlog.js" defer></script>
     <link rel="stylesheet" href="../styles.css">
 </head>
 
 <body>
-    <header>
-        <h1>Créer une nouvelle partie</h1>
+    <header class="nav-bar">
+        <a id="accueil-game-link" href="../index.html" class="menu">Accueil</a>
+        <a id="resume-game-link" href="../game-resume/game-resume.html" class="menu">Résumé de la partie en cours</a>
     </header>
     <main>
+        <h1>Créer une nouvelle partie</h1>
         <form id="add-backlog-form" action="../game/game.html">
             <label for="backlog-count">Nombre de fonctionnalités (max : 20) :</label>
             <input type="number" id="backlog-count" name="backlog-count" min="1" max="20" value="1" required>

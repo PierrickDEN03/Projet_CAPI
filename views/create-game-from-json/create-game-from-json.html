@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planning Poker - Cartes</title>
+    <script type="module" src="./create-game-from-json.js" defer></script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="./create-game-from-json.css">
+</head>
+
+<body>
+    <header>
+        <h1>Création à partir d'un Json</h1>
+    </header>
+    <main>
+        <div class="center">
+            <p class="bold no-margin">Indications : </p>
+            <p class="no-margin">Il existe trois types de mode, qui sont Médiane, moyenne et unanimité, les valeurs de
+                ces modes dans le
+                fichier JSON sont : mediane, moyenne et unanimite</p>
+            <p class="no-margin">Pour voir un exemple du format JSON à respecter cliquer sur ce lien : <a
+                    href="../json-format-example/json-format-example.json" target="_blank">Exemple format
+                    JSON</a></p>
+        </div>
+        <form id="form-json-create">
+            <label for="json-file">Ajouter un fichier JSON pour créer la partie : </label>
+            <input type="file" id="json-file" name="json-file" multiple required />
+            <button type="submit">Créer la partie</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Planning Poker. Tous droits réservés.</p>
+    </footer>
+</body>
+
+</html>
